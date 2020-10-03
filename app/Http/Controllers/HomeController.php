@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Requests\storePostReqeust;
 
 class HomeController extends Controller
 {
@@ -13,7 +16,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        //
+        $data = Post::orderBy('id','desc')->get();
+        return view('home',compact('data'));
     }
 
     /**
@@ -23,7 +27,7 @@ class HomeController extends Controller
      */
     public function create()
     {
-        //
+        return view('create');
     }
 
     /**
@@ -32,9 +36,19 @@ class HomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(storePostReqeust $request)
     {
-        //
+        // $validated = $request->validated();
+        // $post = new Post();
+        // $post->name = $request->name;
+        // $post->description = $request->description;
+        // $post->save();
+        Post::create([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return redirect('/posts');
     }
 
     /**
@@ -43,9 +57,9 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        return view('show',compact('post'));
     }
 
     /**
@@ -54,9 +68,9 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit(Post $post)
+    {  
+        return view('edit',compact('post'));
     }
 
     /**
@@ -66,9 +80,17 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(storePostReqeust $request, Post $post)
+    {   
+        // $post->name = $request->name;
+        // $post->description = $request->description;
+        // $post->save();
+        $post->update([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return redirect('/posts');
     }
 
     /**
@@ -77,8 +99,9 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect('/posts');
     }
 }
