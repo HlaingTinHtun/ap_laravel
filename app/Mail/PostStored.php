@@ -30,6 +30,6 @@ class PostStored extends Mailable
      */
     public function build()
     {
-        return $this->view('store_mail')->subject('AP Laravel Post Creation')->with(['post'=>$this->post]);
+        return $this->view('storedmail')->subject('Post Creation')->with(['post'=>$this->post]);
     }
 }

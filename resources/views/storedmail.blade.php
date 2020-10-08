@@ -6,7 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h3>Post was created successfully</h3>
-    <h4>Post Name : {{$post->name}}</h4>
+    <h3>{{$post->name}} has created successfully!</h3>
 </body>
 </html>

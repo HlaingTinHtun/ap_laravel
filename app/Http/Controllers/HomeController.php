@@ -50,6 +50,7 @@ class HomeController extends Controller
     {
         $validated = $request->validated();
         $post = Post::create($validated + ['user_id'=>Auth::user()->id]);
+
         return redirect('/posts')->with('status', config('aprogrammer.message.created'));
     }
 
@@ -61,12 +62,6 @@ class HomeController extends Controller
      */
     public function show(Post $post,Test $test)
     {
-        // if($post->user_id != auth()->id()){
-        //     abort(403);
-        // }
-
-        dd($test);
-
         $this->authorize('view',$post);
         return view('show',compact('post'));
     }
