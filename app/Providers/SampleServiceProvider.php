@@ -5,20 +5,22 @@ namespace App\Providers;
 use App\Test;
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+class SampleServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Register services.
      *
      * @return void
      */
     public function register()
     {
-
+        $this->app->bind('test',function(){
+            return new Test('hlaing');
+        });
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap services.
      *
      * @return void
      */

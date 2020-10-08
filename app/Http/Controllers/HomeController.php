@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Test;
 use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\storePostReqeust;
+use App\Mail\PostCreated;
+use App\Mail\PostStored;
 
 class HomeController extends Controller
 {
@@ -19,7 +23,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $data = Post::where('user_id',auth()->id())->orderBy('id','desc')->get();
         return view('home',compact('data'));
@@ -45,8 +49,8 @@ class HomeController extends Controller
     public function store(storePostReqeust $request)
     {
         $validated = $request->validated();
-        Post::create($validated);
-        return redirect('/posts');
+        $post = Post::create($validated + ['user_id'=>Auth::user()->id]);
+        return redirect('/posts')->with('status', config('aprogrammer.message.created'));
     }
 
     /**
@@ -55,11 +59,13 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show(Post $post,Test $test)
     {
         // if($post->user_id != auth()->id()){
         //     abort(403);
         // }
+
+        dd($test);
 
         $this->authorize('view',$post);
         return view('show',compact('post'));
